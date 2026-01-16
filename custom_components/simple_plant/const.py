@@ -23,6 +23,25 @@ HEALTH_OPTIONS = [
     "excellent",
 ]
 
+FEED_OPTIONS = [
+    "liquid",
+    "sticks",
+    "pebbles",
+]
+
+ENABLED_OPTIONS = [
+    "notset",
+    "on",
+    "off",
+]
+
+ILLUMINATION_OPTIONS = [
+    "notset",
+    "sunny",
+    "partly_sunny",
+    "shade",
+]
+
 IMAGES_MIME_TYPES = {
     ".png": "image/png",
     ".jpg": "image/jpeg",
@@ -33,6 +52,7 @@ IMAGES_MIME_TYPES = {
     ".tiff": "image/tiff",
     ".svg": "image/svg+xml",
 }
+
 
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,

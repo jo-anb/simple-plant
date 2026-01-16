@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
-
+import string
 from homeassistant.components.button import (
     ButtonEntity,
     ButtonEntityDescription,
 )
 
 from .const import DOMAIN
+from homeassistant.util.dt import as_local, as_utc, utcnow
 
 if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
@@ -24,6 +26,26 @@ ENTITY_DESCRIPTIONS = (
         key="mark_watered",
         translation_key="mark_watered",
         icon="mdi:watering-can",
+    ),
+    ButtonEntityDescription(
+        key="mark_fertilized",
+        translation_key="mark_fertilized",
+        icon="mdi:seed-outline",
+    ),
+    ButtonEntityDescription(
+        key="mark_misted",
+        translation_key="mark_misted",
+        icon="mdi:spray-bottle",
+    ),
+    ButtonEntityDescription(
+        key="mark_cleaned",
+        translation_key="mark_cleaned",
+        icon="mdi:shimmer",
+    ),
+    ButtonEntityDescription(
+        key="update_data",
+        translation_key="update_data",
+        icon="mdi:sync",
     ),
 )
 
@@ -69,7 +91,22 @@ class SimplePlantButton(ButtonEntity):
     def device(self) -> str | None:
         """Return the device name."""
         return self.coordinator.device
+        
+    async def get_dates(self) -> dict[str, datetime] | None:
+        """Get dates from relevants device entites states."""
+        return await self.coordinator.get_dates()
 
     async def async_press(self) -> None:
         """Press the button."""
-        await self.coordinator.async_mark_as_watered_toggle()
+        
+        actions = [self.entity_description.key.split("_")[1]]
+        if actions[0] == "fertilized":
+            actions = ["fertilized", "watered"]
+
+        if self.entity_description.key != "update_data":
+            for action in actions:
+                await self.coordinator.async_mark_action_toggle(action=action)
+
+        if self.entity_description.key == "update_data":
+            await self.coordinator.async_migrate_data()
+            

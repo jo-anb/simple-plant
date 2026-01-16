@@ -12,7 +12,7 @@ cp -r "${PWD}"/simple-plant-card/dist/* \
 if [[ "$1" == "--all" ]]
 then
     echo "Copying component"
-    mkdir -p "${PWD}/config/custom_components/simple_plant/"
-    cp -r "${PWD}"/custom_components/simple_plant/* \
-        "${PWD}/config/custom_components/simple_plant/";
+    mkdir -p "${PWD}/config/custom_components/simple_plant_extended/"
+    cp -r "${PWD}"/custom_components/simple_plant_extended/* \
+        "${PWD}/config/custom_components/simple_plant_extended/";
 fi

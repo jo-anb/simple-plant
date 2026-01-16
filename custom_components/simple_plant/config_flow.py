@@ -20,7 +20,8 @@ from homeassistant.helpers import selector
 from homeassistant.util import slugify
 from homeassistant.util.dt import as_local, as_utc, utcnow
 
-from .const import DOMAIN, HEALTH_OPTIONS, IMAGES_MIME_TYPES, LOGGER, STORAGE_DIR
+from .const import DOMAIN, HEALTH_OPTIONS, IMAGES_MIME_TYPES, LOGGER, STORAGE_DIR, FEED_OPTIONS, ENABLED_OPTIONS, ILLUMINATION_OPTIONS
+
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
@@ -92,6 +93,75 @@ def user_form() -> vol.Schema:
                     unit_of_measurement="days",
                 ),
             ),
+            vol.Required("fertilization_method"): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    {
+                        "options": FEED_OPTIONS,
+                        "custom_value": False,
+                        "sort": False,
+                    }
+                )
+            ),
+            vol.Required("last_fertilized"): selector.DateSelector(
+                selector.DateSelectorConfig(),
+            ),
+            vol.Required("days_between_fertilizations"): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=1,
+                    max=60,
+                    mode=selector.NumberSelectorMode.BOX,
+                    unit_of_measurement="days",
+                ),
+            ),
+            vol.Required("misting_enabled"): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    {
+                        "options": ENABLED_OPTIONS,
+                        "custom_value": False,
+                        "sort": False,
+                    }
+                )
+            ),
+            vol.Required("last_misted"): selector.DateSelector(
+                selector.DateSelectorConfig(),
+            ),
+            vol.Optional("days_between_mistings"): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=1,
+                    max=60,
+                    mode=selector.NumberSelectorMode.BOX,
+                    unit_of_measurement="days",
+                ),
+            ),
+            vol.Required("last_cleaned"): selector.DateSelector(
+                selector.DateSelectorConfig(),
+            ),
+            vol.Required("cleaning_enabled"): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    {
+                        "options": ENABLED_OPTIONS,
+                        "custom_value": False,
+                        "sort": False,
+                    }
+                )
+            ),
+            vol.Optional("days_between_cleanings"): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=1,
+                    max=60,
+                    mode=selector.NumberSelectorMode.BOX,
+                    unit_of_measurement="days",
+                ),
+            ),
+            vol.Required("illumination"): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    {
+                        "options": ILLUMINATION_OPTIONS,
+                        "custom_value": False,
+                        "sort": False,
+                    }
+                )
+            ),
             vol.Required("health"): selector.SelectSelector(
                 selector.SelectSelectorConfig(
                     {
@@ -101,7 +171,9 @@ def user_form() -> vol.Schema:
                     }
                 )
             ),
-            vol.Optional("species", default=""): str,
+            vol.Optional("species", default="notset"): selector.TextSelector(
+                selector.TextSelectorConfig(multiline=False, multiple=False)
+            ),
             vol.Required("photo"): selector.FileSelector(
                 selector.FileSelectorConfig(accept="image/*")
             ),

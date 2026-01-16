@@ -71,30 +71,48 @@ class SimplePlantBinarySensor(BinarySensorEntity):
         """Return the device name."""
         return self.coordinator.device
 
-    def get_dates(self) -> dict[str, datetime] | None:
+    async def get_dates(self) -> dict[str, datetime] | None:
         """Get dates from relevants device entites states."""
-        return self.coordinator.get_dates()
+        return await self.coordinator.get_dates()
 
     async def async_added_to_hass(self) -> None:
         """Run when entity about to be added to hass."""
         await super().async_added_to_hass()
         device = self.coordinator.device
 
+        last_date = None
+        daysbetween = None
+        if self.entity_description.key == "todo":
+            last_date = f"date.{DOMAIN}_last_watered_{self.device}"
+            daysbetween = f"number.{DOMAIN}_days_between_waterings_{self.device}"
+        if "fertilization" in self.entity_description.key:
+            last_date = f"date.{DOMAIN}_last_fertilized_{self.device}"
+            daysbetween = f"number.{DOMAIN}_days_between_fertilizations_{self.device}"
+        if "misting" in self.entity_description.key:
+            last_date = f"date.{DOMAIN}_last_misted_{self.device}"
+            daysbetween = f"number.{DOMAIN}_days_between_mistings_{self.device}"
+        if "cleaning" in self.entity_description.key:
+            last_date = f"date.{DOMAIN}_last_cleaned_{self.device}"
+            daysbetween = f"number.{DOMAIN}_days_between_cleanings_{self.device}"
+
         # Subscribe to state changes
-        self.async_on_remove(
-            async_track_state_change_event(
-                self.hass,
-                f"date.{DOMAIN}_last_watered_{device}",
-                self._update_state,
+        if last_date not in ["unknown", "", "None", None]:
+            self.async_on_remove(
+                async_track_state_change_event(
+                    self.hass,
+                    last_date,
+                    self._update_state,
+                )
             )
-        )
-        self.async_on_remove(
-            async_track_state_change_event(
-                self.hass,
-                f"number.{DOMAIN}_days_between_waterings_{device}",
-                self._update_state,
+        if daysbetween not in ["unknown", "", "None", None]:
+            self.async_on_remove(
+                async_track_state_change_event(
+                    self.hass,
+                    daysbetween,
+                    self._update_state,
+                )
             )
-        )
+            
         self.async_on_remove(
             async_track_time_change(
                 self.hass,
@@ -123,13 +141,23 @@ class SimplePlantTodo(SimplePlantBinarySensor):
 
     async def _update_state(self, _event: Event | None = None) -> None:
         """Update the binary sensor state based on other entities."""
-        dates = self.get_dates()
+        dates = await self.get_dates()
 
         if not dates:
             return
 
+        next_date = None
+        if self.entity_description.key == "todo":
+            next_date = "next_watering"
+        if "fertilization" in self.entity_description.key:
+            next_date = "next_fertilization"
+        if "mist" in self.entity_description.key:
+            next_date = "next_misting"
+        if "clean" in self.entity_description.key:
+            next_date = "next_cleaning"
+
         self._attr_native_value = (
-            as_local(dates["today"]).date() >= as_local(dates["next_watering"]).date()
+            as_local(dates["today"]).date() >= as_local(dates[next_date]).date()
         )
         self.async_write_ha_state()
 
@@ -138,17 +166,27 @@ class SimplePlantProblem(SimplePlantBinarySensor):
     """simple_plant binary_sensor for problem."""
 
     _fallback_value = False
-    _attr_translation_key = "problem"
+    # _attr_translation_key = "problem"
 
     async def _update_state(self, _event: Event | None = None) -> None:
         """Update the binary sensor state based on other entities."""
-        dates = self.get_dates()
+        dates = await self.get_dates()
 
         if not dates:
             return
+        
+        next_date = None
+        if self.entity_description.key == "problem":
+            next_date = "next_watering"
+        if "fertilization" in self.entity_description.key:
+            next_date = "next_fertilization"
+        if "misting" in self.entity_description.key:
+            next_date = "next_misting"
+        if "cleaning" in self.entity_description.key:
+            next_date = "next_cleaning"
 
         self._attr_native_value = (
-            as_local(dates["today"]).date() > as_local(dates["next_watering"]).date()
+            as_local(dates["today"]).date() > as_local(dates[next_date]).date()
         )
         self.async_write_ha_state()
 
@@ -164,13 +202,70 @@ ENTITIES = [
         ),
     },
     {
+        "class": SimplePlantTodo,
+        "description": BinarySensorEntityDescription(
+            key="fertilization_todo",
+            translation_key="fertilization_todo",
+            name="Simple Plant Binary Sensor Fertilization Todo",
+            icon="mdi:water-check-outline",
+        ),
+    },
+    {
+        "class": SimplePlantTodo,
+        "description": BinarySensorEntityDescription(
+            key="misting_todo",
+            translation_key="misting_todo",
+            name="Simple Plant Binary Sensor Misting Todo",
+            icon="mdi:water-check-outline",
+        ),
+    },
+    {
+        "class": SimplePlantTodo,
+        "description": BinarySensorEntityDescription(
+            key="cleaning_todo",
+            translation_key="cleaning_todo",
+            name="Simple Plant Binary Sensor Cleaning Todo",
+            icon="mdi:water-check-outline",
+        ),
+    },
+    {
         "class": SimplePlantProblem,
         "description": BinarySensorEntityDescription(
             key="problem",
             translation_key="problem",
-            name="Simple Plant Binary Sensor Problem",
+            name="Simple Plant Watering Problem",
             device_class=BinarySensorDeviceClass.PROBLEM,
             icon="mdi:water-alert-outline",
+        ),
+    },
+    {
+        "class": SimplePlantProblem,
+        "description": BinarySensorEntityDescription(
+            key="fertilization_problem",
+            translation_key="fertilization_problem",
+            name="Simple Plant Fertilization Problem",
+            device_class=BinarySensorDeviceClass.PROBLEM,
+            icon="mdi:chili-alert-outline",
+        ),
+    },
+    {
+        "class": SimplePlantProblem,
+        "description": BinarySensorEntityDescription(
+            key="misting_problem",
+            translation_key="misting_problem",
+            name="Simple Plant Misting Problem",
+            device_class=BinarySensorDeviceClass.PROBLEM,
+            icon="mdi:fan-alert",
+        ),
+    },
+    {
+        "class": SimplePlantProblem,
+        "description": BinarySensorEntityDescription(
+            key="cleaning_problem",
+            translation_key="cleaning_problem",
+            name="Simple Plant Cleaning Problem",
+            device_class=BinarySensorDeviceClass.PROBLEM,
+            icon="mdi:wiper-wash-alert",
         ),
     },
 ]

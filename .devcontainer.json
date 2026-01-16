@@ -1,5 +1,5 @@
 {
-    "name": "ndesgranges/simple-plant",
+    "name": "jo-anb/simple-plant",
     "image": "mcr.microsoft.com/devcontainers/python:3.13",
     "postCreateCommand": "scripts/setup",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/simple-plant,type=bind",

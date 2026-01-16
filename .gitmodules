@@ -1,6 +1,3 @@
 [submodule "simple-plant-card"]
 	path = simple-plant-card
 	url = git@github.com:jo-anb/simple-plant-card.git
-[submodule "{submodule_path}"]
-	path = {submodule_path}
-	url = https://github.com/jo-anb/simple-plant-card

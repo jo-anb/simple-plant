@@ -9,7 +9,9 @@ from homeassistant.components.select import (
     SelectEntityDescription,
 )
 
-from .const import DOMAIN, HEALTH_OPTIONS, LOGGER
+from homeassistant.helpers.event import async_track_state_change_event
+
+from .const import DOMAIN, HEALTH_OPTIONS, LOGGER, FEED_OPTIONS,ENABLED_OPTIONS, ILLUMINATION_OPTIONS
 
 if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
@@ -26,6 +28,30 @@ ENTITY_DESCRIPTIONS = (
         icon="mdi:heart-pulse",
         options=HEALTH_OPTIONS,
     ),
+    SelectEntityDescription(
+        key="feed_method",
+        translation_key="feed_method",
+        icon="mdi:seed",
+        options=FEED_OPTIONS,
+    ),
+    SelectEntityDescription(
+        key="misting_enabled",
+        translation_key="misting_enabled",
+        icon="mdi:spray-bottle",
+        options=ENABLED_OPTIONS,
+    ),
+    SelectEntityDescription(
+        key="cleaning_enabled",
+        translation_key="cleaning_enabled",
+        icon="mdi:shimmer",
+        options=ENABLED_OPTIONS,
+    ),
+    SelectEntityDescription(
+        key="illumination",
+        translation_key="illumination",
+        icon="mdi:theme-light-dark",
+        options=ILLUMINATION_OPTIONS,
+    ),
 )
 
 COLOR_MAPPING = {
@@ -34,6 +60,12 @@ COLOR_MAPPING = {
     "good": "GreenYellow",
     "verygood": "LawnGreen",
     "excellent": "LimeGreen",
+    "on": "LawnGreen",
+    "off": "DimGray",
+    "sunny": "GoldenRod",
+    "partly_sunny": "DarkGoldenRod",
+    "shade": "DarkGray",
+    "notset": "DimGray",
 }
 
 
@@ -63,7 +95,7 @@ class SimplePlantSelect(SelectEntity):
         """Initialize the select class."""
         super().__init__()
         self.entity_description = description
-        self._fallback_value = str(entry.data.get("health"))
+        self._fallback_value = str(entry.data.get(description.key, "notset"))
         self.coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         device = self.coordinator.device
@@ -85,6 +117,53 @@ class SimplePlantSelect(SelectEntity):
 
     async def async_added_to_hass(self) -> None:
         """Run when entity is added to hass."""
+        
+        async def _select_updated(event, new_value=None):
+
+            if self.entity_description.key in ["cleaning_enabled", "misting_enabled"]:
+                subject = None
+                if self.entity_description.key == "misting_enabled":
+                    subject = "misting"
+                    subject_short = "mist"
+                elif self.entity_description.key == "cleaning_enabled":
+                    subject = "cleaning"
+                    subject_short = "clean"
+                
+                if new_value != None:
+                    new_state = new_value
+                else:
+                    new_state_obj = event.data.get("new_state")
+                    new_state = new_state_obj.state if new_state_obj else None
+
+                if new_state == "on":
+                    await self.hass.services.async_call(
+                        "homeassistant", "turn_on",
+                        {"entity_id": [
+                            f"button.{DOMAIN}_mark_{subject_short}ed_{self.device}",
+                            f"date.{DOMAIN}_last_{subject_short}ed_{self.device}",
+                            f"number.{DOMAIN}_days_between_{subject}s_{self.device}",
+                            f"binary_sensor.{DOMAIN}_{subject}_problem_{self.device}",
+                            f"binary_sensor.{DOMAIN}_{subject}_todo_{self.device}",
+                            f"sensor.{DOMAIN}_next_{subject}_{self.device}",
+                            ]
+                        },
+                        blocking=True,
+                    )
+                elif new_state == "off":
+                    await self.hass.services.async_call(
+                        "homeassistant", "turn_off",
+                        {"entity_id": [
+                            f"button.{DOMAIN}_mark_{subject_short}ed_{self.device}",
+                            f"date.{DOMAIN}_last_{subject_short}ed_{self.device}",
+                            f"number.{DOMAIN}_days_between_{subject}s_{self.device}",
+                            f"binary_sensor.{DOMAIN}_{subject}_problem_{self.device}",
+                            f"binary_sensor.{DOMAIN}_{subject}_todo_{self.device}",
+                            f"sensor.{DOMAIN}_next_{subject}_{self.device}",
+                            ]
+                        },
+                        blocking=True,
+                    )
+                
         await super().async_added_to_hass()
 
         def warning(msg: str) -> None:
@@ -102,6 +181,18 @@ class SimplePlantSelect(SelectEntity):
             await self.async_select_option(self._fallback_value)
             return
         await self.async_select_option(data)
+
+        # await _select_updated({"data": {"new_state": data}}, new_value=data)
+
+
+        # Volg de select-waarde
+        # self.async_on_remove(
+        #     async_track_state_change_event(
+        #         self.hass,
+        #         f"select.{DOMAIN}_{self.entity_description.key}_{self.device}",
+        #         _select_updated
+        #     )
+        # )
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""

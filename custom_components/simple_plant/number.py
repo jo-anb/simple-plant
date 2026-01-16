@@ -32,6 +32,33 @@ ENTITY_DESCRIPTIONS = (
         native_step=0,
         native_unit_of_measurement=UnitOfTime.DAYS,
     ),
+    NumberEntityDescription(
+        key="days_between_fertilizations",
+        translation_key="days_between_fertilizations",
+        device_class=NumberDeviceClass.DURATION,
+        mode=NumberMode.BOX,
+        icon="mdi:counter",
+        native_step=0,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+    ),
+    NumberEntityDescription(
+        key="days_between_mistings",
+        translation_key="days_between_mistings",
+        device_class=NumberDeviceClass.DURATION,
+        mode=NumberMode.BOX,
+        icon="mdi:counter",
+        native_step=0,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+    ),
+    NumberEntityDescription(
+        key="days_between_cleanings",
+        translation_key="days_between_cleanings",
+        device_class=NumberDeviceClass.DURATION,
+        mode=NumberMode.BOX,
+        icon="mdi:counter",
+        native_step=0,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+    ),
 )
 
 
@@ -53,7 +80,7 @@ class SimplePlantNumber(NumberEntity):
     _attr_has_entity_name = True
     _attr_should_poll = False
     _attr_native_min_value = 1
-    _attr_native_max_value = 60
+    _attr_native_max_value = 190
     _attr_native_step = 1
 
     def __init__(
@@ -75,7 +102,7 @@ class SimplePlantNumber(NumberEntity):
         self._attr_unique_id = f"{DOMAIN}_{description.key}_{device}"
 
         # set value
-        self._fallback_value = entry.data.get("days_between_waterings")
+        self._fallback_value = entry.data.get(description.key)
 
         # Set up device info
         self._attr_device_info = self.coordinator.device_info

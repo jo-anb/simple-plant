@@ -6,9 +6,20 @@
                 "data": {
                     "name": "Name",
                     "last_watered": "Last time watered",
+                    "last_fertilized": "Last time fertilized",
+                    "last_misted": "Last time misted (Optional)",
+                    "last_cleaned": "Last time cleaned (Optional)",
                     "days_between_waterings": "Days between watering",
+                    "days_between_fertilizations": "Days between fertilizations",
+                    "days_between_mistings": "Days between misting (Optional)",
+                    "days_between_cleanings": "Days between cleaning (Optional)",
+                    "feed_method": "Feeding method",
+                    "illumination": "Illumination needs",
                     "photo": "Photo",
                     "health": "Current health (Optional)",
+                    "misting_enabled": "Plant needs misting",
+                    "cleaning_enabled": "Plant needs cleaning",
+                    "enabled": "Enabled",
                     "species": "Species/Variety of your plant (Optional)"
                 }
             }
@@ -42,9 +53,39 @@
         "button": {
             "mark_watered": {
                 "name": "Mark watered"
+            },
+            "mark_fertilized": {
+                "name": "Mark fertilized"
+            },
+            "mark_misted": {
+                "name": "Mark misted"
+            },
+            "mark_cleaned": {
+                "name": "Mark cleaned"
+            },
+            "update_data": {
+                "name": "Migrate data"
             }
         },
         "binary_sensor": {
+            "fertilization_todo": {
+                "name": "To Fertilize"
+            },
+            "fertilization_problem": {
+                "name": "Late Fertilization"
+            },
+            "misting_todo": {
+                "name": "To Mist"
+            },
+            "misting_problem": {
+                "name": "Late Misting"
+            },
+            "cleaning_todo": {
+                "name": "To Clean"
+            },
+            "cleaning_problem": {
+                "name": "Late Cleaning"
+            },
             "todo": {
                 "name": "To Water"
             },
@@ -54,7 +95,16 @@
         },
         "date": {
             "last_watered": {
-                "name": "Last time watered"
+                "name": "Last watered"
+            },
+            "last_fertilized": {
+                "name": "Last fertilized"
+            },
+            "last_misted": {
+                "name": "Last misted"
+            },
+            "last_cleaned": {
+                "name": "Last cleaned"
             }
         },
         "image": {
@@ -65,6 +115,15 @@
         "number": {
             "days_between_waterings": {
                 "name": "Days between waterings"
+            },
+            "days_between_fertilizations": {
+                "name": "Days between fertilizations"
+            },
+            "days_between_mistings": {
+                "name": "Days between mistings"
+            },
+            "days_between_cleanings": {
+                "name": "Days between cleanings"
             }
         },
         "select": {
@@ -78,11 +137,53 @@
                     "verygood": "Very Good",
                     "excellent": "Excellent"
                 }
+            },
+            "feed_method": {
+                "name": "Feeding method",
+                "state": {
+                    "liquid": "Liquid",
+                    "pebbles": "Pebbles",
+                    "sticks": "Sticks"
+                }
+            },
+            "misting_enabled": {
+                "name": "Needs misting",
+                "state": {
+                    "notset": "Not Set",
+                    "on": "Yes",
+                    "off": "No"
+                }
+            },
+            "cleaning_enabled": {
+                "name": "Needs cleaning",
+                "state": {
+                    "notset": "Not Set",
+                    "on": "Yes",
+                    "off": "No"
+                }
+            },
+            "illumination": {
+                "name": "Illumination",
+                "state": {
+                    "notset": "Not Set",
+                    "sunny": "Sunny",
+                    "partly_sunny": "Partly Sunny",
+                    "shade": "Shade"
+                }
             }
         },
         "sensor": {
             "next_watering": {
                 "name": "Next watering"
+            },
+            "next_fertilization": {
+                "name": "Next fertilization"
+            },
+            "next_misting": {
+                "name": "Next misting"
+            },
+            "next_cleaning": {
+                "name": "Next cleaning"
             }
         }
     },
