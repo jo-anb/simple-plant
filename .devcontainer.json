@@ -1,5 +1,5 @@
 {
-    "name": "jo-anb/simple-plant",
+    "name": "jo-anb/simple-plant-extended",
     "image": "mcr.microsoft.com/devcontainers/python:3.13",
     "postCreateCommand": "scripts/setup",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/simple-plant,type=bind",
