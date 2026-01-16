@@ -1,17 +1,17 @@
 {
-    "domain": "simple_plant",
-    "name": "Simple Plant",
+    "domain": "simple_plant_extended",
+    "name": "Simple Plant Extended",
     "codeowners": [
-        "@ndesgranges"
+        "@jo-anb"
     ],
     "config_flow": true,
     "dependencies": [
         "file_upload"
     ],
-    "documentation": "https://github.com/ndesgranges/simple-plant",
+    "documentation": "https://github.com/jo-anb/simple-plant-extended",
     "integration_type": "device",
     "iot_class": "local_polling",
-    "issue_tracker": "https://github.com/ndesgranges/simple-plant/issues",
+    "issue_tracker": "https://github.com/jo-anb/simple-plant-extended/issues",
     "requirements": [
         "aiofiles"
     ],
