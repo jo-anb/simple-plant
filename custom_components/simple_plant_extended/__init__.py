@@ -22,7 +22,7 @@ from homeassistant.util import slugify
 
 from .config_flow import remove_photo
 from .const import DOMAIN, LOGGER, PLATFORMS
-from .coordinator import SimplePlanExtendedtCoordinator
+from .coordinator import SimplePlantExtendedCoordinator
 
 if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
@@ -43,7 +43,7 @@ async def async_setup(hass: HomeAssistant, _config: ConfigType) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up this integration using UI."""
     LOGGER.debug("Setting up entry %s", entry.title)
-    coordinator = SimplePlanExtendedtCoordinator(hass, entry)
+    coordinator = SimplePlantExtendedCoordinator(hass, entry)
 
     if entry.state == ConfigEntryState.SETUP_IN_PROGRESS:
         await coordinator.async_config_entry_first_refresh()
@@ -106,7 +106,7 @@ async def on_device_registry_update_handler(
         )
         new_title = device.name_by_user
 
-        coordinator: SimplePlanExtendedtCoordinator = hass.data[DOMAIN][entry.entry_id]
+        coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
         await coordinator.async_rename_device(slugify(new_title))
 
         await hass.config_entries.async_unload(entry.entry_id)
@@ -132,7 +132,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle removal of an entry."""
     # Remove storage
-    coordinator = SimplePlanExtendedtCoordinator(hass, entry)
+    coordinator = SimplePlantExtendedCoordinator(hass, entry)
     await coordinator.remove_device_from_storage()
 
     # Remove photo
@@ -147,7 +147,7 @@ async def async_reload_entry(
     if entry.title != entry.data.get("name"):
         LOGGER.info("Changing name of %s to %s", entry.data.get("name"), entry.title)
         # Migrate storage storage
-        coordinator: SimplePlanExtendedtCoordinator = hass.data[DOMAIN][entry.entry_id]
+        coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
         await coordinator.async_rename_device(slugify(entry.title))
         # Update entry
         data = dict(entry.data)
