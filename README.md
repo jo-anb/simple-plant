@@ -10,7 +10,7 @@ It includes more settings for your plant management. With this integration you c
 - Fertilization options
 - Cleaning options
 - Misting options
-- Plant ulimination requirements
+- Plant ullimination requirements
 
 I also extended the [simple-plant-card](https://github.com/ndesgranges/simple-plant-card) card from @ndesgranges to include these new components in the card.
 See the card repo, [simple-plant-extended-card](https://github.com/jo-anb/simple-plant-extended-card)
@@ -58,4 +58,4 @@ This integration provides the following entities
 ## Credits
 
 
-This project has been started using [simple-plant-card](https://github.com/ndesgranges/simple-plant-card) as a base integration
+This project has been started using [simple-plant](https://github.com/ndesgranges/simple-plant) as a base integration
