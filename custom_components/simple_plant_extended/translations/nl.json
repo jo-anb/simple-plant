@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "description": "Geef basisinformatie voor je nieuwe plant. Hulp nodig bij de configuratie? Zie: https://github.com/ndesgranges/simple-plant",
+        "description": "Geef basisinformatie voor je nieuwe plant. Hulp nodig bij de configuratie? Zie: https://github.com/jo-anb/simple-plant-extended",
         "data": {
           "name": "Naam",
           "last_watered": "Laatst bewaterd",
@@ -38,7 +38,7 @@
   "options": {
     "step": {
       "init": {
-        "description": "Wijzig de soort of foto van je plant. Hulp nodig bij de configuratie? Zie: https://github.com/ndesgranges/simple-plant",
+        "description": "Wijzig de soort of foto van je plant. Hulp nodig bij de configuratie? Zie: https://github.com/jo-anb/simple-plant-extended",
         "data": {
           "photo": "Foto",
           "species": "Soort/variëteit van je plant (optioneel)"
