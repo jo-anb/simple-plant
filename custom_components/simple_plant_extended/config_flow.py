@@ -1,4 +1,4 @@
-"""Adds config flow for Simple PLant."""
+"""Adds config flow for Simple PLant Extended."""
 
 from __future__ import annotations
 
@@ -197,8 +197,8 @@ def option_form(suggested_species: str | None = None) -> vol.Schema:
 ## CONFIG FLOWS
 
 
-class SimplePlantFlowHandler(ConfigFlow, domain=DOMAIN):
-    """Config flow for Simple Plant."""
+class SimplePlantExtendedFlowHandler(ConfigFlow, domain=DOMAIN):
+    """Config flow for Simple Plant Extended."""
 
     def __init__(self) -> None:
         """Init."""
@@ -208,7 +208,7 @@ class SimplePlantFlowHandler(ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
         """Get options flow for this handler."""
-        return SimplePlantOptionFlowHandler(config_entry)
+        return SimplePlantExtendedOptionFlowHandler(config_entry)
 
     async def async_step_user(self, user_input: dict | None = None) -> ConfigFlowResult:
         """
@@ -259,8 +259,8 @@ class SimplePlantFlowHandler(ConfigFlow, domain=DOMAIN):
         return self.async_create_entry(title=user_input["name"], data=user_input)
 
 
-class SimplePlantOptionFlowHandler(OptionsFlow):
-    """Reconfiguration flow for Simple Plant."""
+class SimplePlantExtendedOptionFlowHandler(OptionsFlow):
+    """Reconfiguration flow for Simple Plant Extended."""
 
     def __init__(self, entry: ConfigEntry) -> None:
         """Init."""

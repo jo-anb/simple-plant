@@ -1,18 +1,18 @@
-"""Constants for simple_plant."""
+"""Constants for simple_plant_extended."""
 
 from logging import Logger, getLogger
 
 from homeassistant.const import Platform
 
-STORAGE_KEY = "simple_plant_data"
+STORAGE_KEY = "simple_plant_extended_data"
 
 LOGGER: Logger = getLogger(__package__)
 
-DOMAIN = "simple_plant"
+DOMAIN = "simple_plant_extended"
 
-STORAGE_DIR = "simple_plant"
+STORAGE_DIR = "simple_plant_extended"
 
-MANUFACTURER = "Simple Plant"
+MANUFACTURER = "Simple Plant Extended"
 
 HEALTH_OPTIONS = [
     "notset",

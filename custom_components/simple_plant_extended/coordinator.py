@@ -1,4 +1,4 @@
-"""Data coordinator for simple_plant."""
+"""Data coordinator for simple_plant_extended."""
 
 from __future__ import annotations
 import asyncio
@@ -13,15 +13,15 @@ from homeassistant.util import slugify
 from homeassistant.util.dt import as_local, as_utc, utcnow
 
 from .const import DOMAIN, LOGGER, MANUFACTURER
-from .data import SimplePlantStore
+from .data import SimplePlantExtendedStore
 
 if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.core import HomeAssistant
 
 
-class SimplePlantCoordinator(DataUpdateCoordinator[dict]):
-    """Class to manage fetching Simple Plant data."""
+class SimplePlantExtendedCoordinator(DataUpdateCoordinator[dict]):
+    """Class to manage fetching Simple Plant Extended data."""
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize the coordinator."""
@@ -31,7 +31,7 @@ class SimplePlantCoordinator(DataUpdateCoordinator[dict]):
             name=DOMAIN,
         )
         self.device = slugify(entry.title)
-        self.store = SimplePlantStore(hass)
+        self.store = SimplePlantExtendedStore(hass)
         self.config_entry = entry
 
         # Set up device info
@@ -128,7 +128,7 @@ class SimplePlantCoordinator(DataUpdateCoordinator[dict]):
         states_to_get = {
             "last_watered": f"date.{DOMAIN}_last_watered_{self.device}",
             "nb_watered_days": f"number.{DOMAIN}_days_between_waterings_{self.device}",
-            "last_feed": f"sensor.simple_plant_feed_lastfeed_{self.device}",
+            "last_feed": f"sensor.{DOMAIN}_feed_lastfeed_{self.device}",
             "last_fertilized": f"date.{DOMAIN}_last_fertilized_{self.device}",
             "nb_fertilized_days": f"number.{DOMAIN}_days_between_fertilizations_{self.device}",
             "last_misted": f"date.{DOMAIN}_last_misted_{self.device}",

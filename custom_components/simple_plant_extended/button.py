@@ -1,4 +1,4 @@
-"""Button platform for simple_plant."""
+"""Button platform for simple_plant_extended."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-    from .coordinator import SimplePlantCoordinator
+    from .coordinator import SimplePlantExtendedCoordinator
 
 
 ENTITY_DESCRIPTIONS = (
@@ -57,13 +57,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the button platform."""
     async_add_entities(
-        SimplePlantButton(hass, entry, entity_description)
+        SimplePlantExtendedButton(hass, entry, entity_description)
         for entity_description in ENTITY_DESCRIPTIONS
     )
 
 
-class SimplePlantButton(ButtonEntity):
-    """simple_plant button class."""
+class SimplePlantExtendedButton(ButtonEntity):
+    """simple_plant_extended button class."""
 
     _attr_has_entity_name = True
 
@@ -77,7 +77,7 @@ class SimplePlantButton(ButtonEntity):
         super().__init__()
 
         self.entity_description = description
-        self.coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
+        self.coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         device = self.coordinator.device
 

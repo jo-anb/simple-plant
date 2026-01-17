@@ -1,4 +1,4 @@
-"""Sensor platform for simple_plant."""
+"""Sensor platform for simple_plant_extended."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
     from homeassistant.core import Event, EventStateChangedData, HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-    from .coordinator import SimplePlantCoordinator
+    from .coordinator import SimplePlantExtendedCoordinator
 
 
 ENTITY_DESCRIPTIONS = (
@@ -74,13 +74,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     async_add_entities(
-        SimplePlantSensor(hass, entry, entity_description)
+        SimplePlantExtendedSensor(hass, entry, entity_description)
         for entity_description in ENTITY_DESCRIPTIONS
     )
 
 
-class SimplePlantSensor(SensorEntity):
-    """simple_plant sensor class."""
+class SimplePlantExtendedSensor(SensorEntity):
+    """simple_plant_extended sensor class."""
 
     _attr_has_entity_name = True
 
@@ -95,7 +95,7 @@ class SimplePlantSensor(SensorEntity):
         self.entity_description = description
         self._fallback_value: date | None = None
         self._attr_native_value: date | None = None
-        self.coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
+        self.coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         device = self.coordinator.device
 

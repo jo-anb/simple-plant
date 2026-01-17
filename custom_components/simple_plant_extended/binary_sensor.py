@@ -1,4 +1,4 @@
-"""Binary sensor platform for simple_plant."""
+"""Binary sensor platform for simple_plant_extended."""
 
 from __future__ import annotations
 
@@ -24,11 +24,11 @@ if TYPE_CHECKING:
     from homeassistant.core import Event, EventStateChangedData, HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-    from .coordinator import SimplePlantCoordinator
+    from .coordinator import SimplePlantExtendedCoordinator
 
 
-class SimplePlantBinarySensor(BinarySensorEntity):
-    """simple_plant binary_sensor base class."""
+class SimplePlantExtendedBinarySensor(BinarySensorEntity):
+    """simple_plant_extended binary_sensor base class."""
 
     _attr_has_entity_name = True
     _fallback_value: bool = False
@@ -43,7 +43,7 @@ class SimplePlantBinarySensor(BinarySensorEntity):
         super().__init__()
         self._hass = hass
         self.entity_description = description
-        self.coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
+        self.coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         self._attr_should_poll = True
 
@@ -134,8 +134,8 @@ class SimplePlantBinarySensor(BinarySensorEntity):
         raise NotImplementedError
 
 
-class SimplePlantTodo(SimplePlantBinarySensor):
-    """simple_plant binary_sensor for todo."""
+class SimplePlantExtendedTodo(SimplePlantExtendedBinarySensor):
+    """simple_plant_extended binary_sensor for todo."""
 
     _fallback_value = False
 
@@ -162,8 +162,8 @@ class SimplePlantTodo(SimplePlantBinarySensor):
         self.async_write_ha_state()
 
 
-class SimplePlantProblem(SimplePlantBinarySensor):
-    """simple_plant binary_sensor for problem."""
+class SimplePlantExtendedProblem(SimplePlantExtendedBinarySensor):
+    """simple_plant_extended binary_sensor for problem."""
 
     _fallback_value = False
     # _attr_translation_key = "problem"
@@ -193,77 +193,77 @@ class SimplePlantProblem(SimplePlantBinarySensor):
 
 ENTITIES = [
     {
-        "class": SimplePlantTodo,
+        "class": SimplePlantExtendedTodo,
         "description": BinarySensorEntityDescription(
             key="todo",
             translation_key="todo",
-            name="Simple Plant Binary Sensor Todo",
+            name="Simple Plant Extended Binary Sensor Todo",
             icon="mdi:water-check-outline",
         ),
     },
     {
-        "class": SimplePlantTodo,
+        "class": SimplePlantExtendedTodo,
         "description": BinarySensorEntityDescription(
             key="fertilization_todo",
             translation_key="fertilization_todo",
-            name="Simple Plant Binary Sensor Fertilization Todo",
+            name="Simple Plant Extended Binary Sensor Fertilization Todo",
             icon="mdi:water-check-outline",
         ),
     },
     {
-        "class": SimplePlantTodo,
+        "class": SimplePlantExtendedTodo,
         "description": BinarySensorEntityDescription(
             key="misting_todo",
             translation_key="misting_todo",
-            name="Simple Plant Binary Sensor Misting Todo",
+            name="Simple Plant Extended Binary Sensor Misting Todo",
             icon="mdi:water-check-outline",
         ),
     },
     {
-        "class": SimplePlantTodo,
+        "class": SimplePlantExtendedTodo,
         "description": BinarySensorEntityDescription(
             key="cleaning_todo",
             translation_key="cleaning_todo",
-            name="Simple Plant Binary Sensor Cleaning Todo",
+            name="Simple Plant Extended Binary Sensor Cleaning Todo",
             icon="mdi:water-check-outline",
         ),
     },
     {
-        "class": SimplePlantProblem,
+        "class": SimplePlantExtendedProblem,
         "description": BinarySensorEntityDescription(
             key="problem",
             translation_key="problem",
-            name="Simple Plant Watering Problem",
+            name="Simple Plant Extended Watering Problem",
             device_class=BinarySensorDeviceClass.PROBLEM,
             icon="mdi:water-alert-outline",
         ),
     },
     {
-        "class": SimplePlantProblem,
+        "class": SimplePlantExtendedProblem,
         "description": BinarySensorEntityDescription(
             key="fertilization_problem",
             translation_key="fertilization_problem",
-            name="Simple Plant Fertilization Problem",
+            name="Simple Plant Extended Fertilization Problem",
             device_class=BinarySensorDeviceClass.PROBLEM,
             icon="mdi:chili-alert-outline",
         ),
     },
     {
-        "class": SimplePlantProblem,
+        "class": SimplePlantExtendedProblem,
         "description": BinarySensorEntityDescription(
             key="misting_problem",
             translation_key="misting_problem",
-            name="Simple Plant Misting Problem",
+            name="Simple Plant Extended Misting Problem",
             device_class=BinarySensorDeviceClass.PROBLEM,
             icon="mdi:fan-alert",
         ),
     },
     {
-        "class": SimplePlantProblem,
+        "class": SimplePlantExtendedProblem,
         "description": BinarySensorEntityDescription(
             key="cleaning_problem",
             translation_key="cleaning_problem",
-            name="Simple Plant Cleaning Problem",
+            name="Simple Plant Extended Cleaning Problem",
             device_class=BinarySensorDeviceClass.PROBLEM,
             icon="mdi:wiper-wash-alert",
         ),

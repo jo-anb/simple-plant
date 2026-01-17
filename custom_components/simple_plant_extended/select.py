@@ -1,4 +1,4 @@
-"""Select platform for simple_plant."""
+"""Select platform for simple_plant_extended."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-    from .coordinator import SimplePlantCoordinator
+    from .coordinator import SimplePlantExtendedCoordinator
 
 
 ENTITY_DESCRIPTIONS = (
@@ -76,13 +76,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the select platform."""
     async_add_entities(
-        SimplePlantSelect(hass, entry, entity_description)
+        SimplePlantExtendedSelect(hass, entry, entity_description)
         for entity_description in ENTITY_DESCRIPTIONS
     )
 
 
-class SimplePlantSelect(SelectEntity):
-    """simple_plant select class."""
+class SimplePlantExtendedSelect(SelectEntity):
+    """simple_plant_extended select class."""
 
     _attr_has_entity_name = True
 
@@ -96,7 +96,7 @@ class SimplePlantSelect(SelectEntity):
         super().__init__()
         self.entity_description = description
         self._fallback_value = str(entry.data.get(description.key, "notset"))
-        self.coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
+        self.coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         device = self.coordinator.device
 

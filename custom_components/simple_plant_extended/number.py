@@ -1,4 +1,4 @@
-"""Number platform for simple_plant."""
+"""Number platform for simple_plant_extended."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-    from .coordinator import SimplePlantCoordinator
+    from .coordinator import SimplePlantExtendedCoordinator
 
 
 ENTITY_DESCRIPTIONS = (
@@ -69,13 +69,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the number platform."""
     async_add_entities(
-        SimplePlantNumber(hass, entry, entity_description)
+        SimplePlantExtendedNumber(hass, entry, entity_description)
         for entity_description in ENTITY_DESCRIPTIONS
     )
 
 
-class SimplePlantNumber(NumberEntity):
-    """simple_plant number class."""
+class SimplePlantExtendedNumber(NumberEntity):
+    """simple_plant_extended number class."""
 
     _attr_has_entity_name = True
     _attr_should_poll = False
@@ -94,7 +94,7 @@ class SimplePlantNumber(NumberEntity):
         self._hass = hass
         self._entry = entry
         self.entity_description = description
-        self.coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
+        self.coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         device = self.coordinator.device
 

@@ -1,4 +1,4 @@
-"""Date platform for simple_plant."""
+"""Date platform for simple_plant_extended."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util.dt import as_local, as_utc
 
 from .const import DOMAIN
-from .coordinator import SimplePlantCoordinator
+from .coordinator import SimplePlantExtendedCoordinator
 
 if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
@@ -52,13 +52,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the date platform."""
     async_add_entities(
-        SimplePlantDate(hass, entry, entity_description)
+        SimplePlantExtendedDate(hass, entry, entity_description)
         for entity_description in ENTITY_DESCRIPTIONS
     )
 
 
-class SimplePlantDate(CoordinatorEntity[SimplePlantCoordinator], DateEntity):
-    """simple_plant date class."""
+class SimplePlantExtendedDate(CoordinatorEntity[SimplePlantExtendedCoordinator], DateEntity):
+    """simple_plant_extended date class."""
 
     _attr_has_entity_name = True
 
@@ -69,7 +69,7 @@ class SimplePlantDate(CoordinatorEntity[SimplePlantCoordinator], DateEntity):
         description: DateEntityDescription,
     ) -> None:
         """Initialize the date class."""
-        coordinator: SimplePlantCoordinator = hass.data[DOMAIN][entry.entry_id]
+        coordinator: SimplePlantExtendedCoordinator = hass.data[DOMAIN][entry.entry_id]
         super().__init__(coordinator)
         self.entity_description = description
 
