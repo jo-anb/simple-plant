@@ -88,7 +88,7 @@ def user_form() -> vol.Schema:
             vol.Required("days_between_waterings"): selector.NumberSelector(
                 selector.NumberSelectorConfig(
                     min=1,
-                    max=60,
+                    max=360,
                     mode=selector.NumberSelectorMode.BOX,
                     unit_of_measurement="days",
                 ),
@@ -108,7 +108,7 @@ def user_form() -> vol.Schema:
             vol.Required("days_between_fertilizations"): selector.NumberSelector(
                 selector.NumberSelectorConfig(
                     min=1,
-                    max=60,
+                    max=360,
                     mode=selector.NumberSelectorMode.BOX,
                     unit_of_measurement="days",
                 ),
@@ -128,7 +128,7 @@ def user_form() -> vol.Schema:
             vol.Optional("days_between_mistings"): selector.NumberSelector(
                 selector.NumberSelectorConfig(
                     min=1,
-                    max=60,
+                    max=360,
                     mode=selector.NumberSelectorMode.BOX,
                     unit_of_measurement="days",
                 ),
@@ -148,7 +148,7 @@ def user_form() -> vol.Schema:
             vol.Optional("days_between_cleanings"): selector.NumberSelector(
                 selector.NumberSelectorConfig(
                     min=1,
-                    max=60,
+                    max=360,
                     mode=selector.NumberSelectorMode.BOX,
                     unit_of_measurement="days",
                 ),

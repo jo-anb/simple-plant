@@ -80,7 +80,7 @@ class SimplePlantExtendedNumber(NumberEntity):
     _attr_has_entity_name = True
     _attr_should_poll = False
     _attr_native_min_value = 1
-    _attr_native_max_value = 190
+    _attr_native_max_value = 360
     _attr_native_step = 1
 
     def __init__(
