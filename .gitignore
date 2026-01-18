@@ -15,6 +15,10 @@ coverage.xml
 .ruff_cache
 
 
+# Environment variables
+.env
+
+
 # Home Assistant configuration
 config/*
 !config/configuration.yaml
